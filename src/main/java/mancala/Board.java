@@ -25,6 +25,40 @@ public class Board {
         return this.pits;
     }
 
+    public void setUpStores() {
+        stores = new ArrayList<>();
+        stores.add(new Store());
+        stores.add(new Store());
+    }
+
+    public ArrayList<Store> getStores() {
+        return this.stores;
+    }
+
+    public void initializeBoard() {
+        // Distribute stones initially
+        for (Pit pit : pits) {
+            for (int i = 0; i < 4; i++) {
+                pit.addStone();
+            }
+        }
+    }
+
+    public void resetBoard() {
+        // Reset the board by removing all stones and initializing again
+        for (Pit pit : pits) {
+            pit.removeStones();
+        }
+        initializeBoard();
+    }
+
+    public void registerPlayers(Player one, Player two) {
+        stores.get(1).setOwner(one);
+        stores.get(0).setOwner(two);
+        one.setStore(stores.get(1));
+        two.setStore(stores.get(0));
+    }
+
     
     public int captureStones(int stoppingPoint) {
 

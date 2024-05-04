@@ -59,6 +59,19 @@ public class Board {
         two.setStore(stores.get(0));
     }
 
+    public int captureStones(int stoppingPoint) {
+        int stonesCaptured = 0;
+        int oppositePoint = 11 - stoppingPoint;
+
+        if (pits.get(oppositePoint).getStoneCount() > 0 && pits.get(stoppingPoint).getStoneCount() == 1) {
+            stonesCaptured += pits.get(oppositePoint).getStoneCount();
+            pits.get(oppositePoint).removeStones();
+            stonesCaptured += pits.get(stoppingPoint).getStoneCount();
+            pits.get(stoppingPoint).removeStones();
+        }
+        return stonesCaptured;
+    }
+
     
     
 

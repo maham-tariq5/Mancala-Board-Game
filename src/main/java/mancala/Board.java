@@ -60,23 +60,7 @@ public class Board {
     }
 
     
-    public int captureStones(int stoppingPoint) {
-
-        int stonesCaptured = 0;
-        int oppositePoint = stoppingPoint;
-
-        // find opposite side 
-        oppositePoint = 11 - stoppingPoint;
-
-        // find if opposite side is empty
-        if(this.getPits().get(oppositePoint).getStoneCount() > 0 && this.getPits().get(stoppingPoint).getStoneCount() == 1){
-            stonesCaptured += this.getPits().get(oppositePoint).getStoneCount();
-            this.getPits().get(oppositePoint).removeStones();
-            stonesCaptured += this.getPits().get(stoppingPoint).getStoneCount();
-            this.getPits().get(stoppingPoint).removeStones();
-        }
-        return stonesCaptured;
-    }
+    
 
     public int distributeStones(int startingPoint){  
         int stonesToDistribute = this.getNumStones(startingPoint);

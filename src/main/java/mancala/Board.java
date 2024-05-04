@@ -72,45 +72,78 @@ public class Board {
         return stonesCaptured;
     }
 
-    
-    
+    public int distributeStones(int startingPoint) {
+        int stonesToDistribute = getNumStones(startingPoint);
+        int stonesAdded = stonesToDistribute;
+        int stonesCaptured;
 
-   
+        int player = (startingPoint < 6) ? 1 : 2;
+        int storeTrack = (player == 1) ? 1 : 0;
 
-    public int moveStones(int startPit, Player player) throws InvalidMoveException{
-        
-        // Validate the start pit is within the board limits.
-    if (startPit < 1 || startPit > 12) {
-        throw new InvalidMoveException("Move is out of bounds.");
+        if (stonesToDistribute == 0) {
+            return 0;
+        }
+
+        pits.get(startingPoint).removeStones();
+
+        int currentPit = startingPoint;
+
+        while (stonesToDistribute > 0) {
+            currentPit = (currentPit + 1) % 12;
+
+            if (currentPit == 6) {
+                storeTrack = (player == 1) ? 0 : 1;
+            }
+
+            if ((currentPit == 5 && player == 1) || (currentPit == 11 && player == 2) ||
+                    (currentPit == 5 && startingPoint == 11 && player == 2 && stonesToDistribute >= 2) ||
+                    (currentPit == 11 && startingPoint == 5 && player == 1 && stonesToDistribute >= 2)) {
+                pits.get(currentPit).addStone();
+                stores.get(storeTrack).addStones(1);
+                stonesToDistribute--;
+            } else if ((currentPit == 5 && stonesToDistribute == 1 && player == 1) ||
+                    (currentPit == 11 && stonesToDistribute == 1 && player == 2)) {
+                stores.get(storeTrack).addStones(1);
+                return 1;
+            } else {
+                pits.get(currentPit).addStone();
+            }
+            stonesToDistribute--;
+        }
+
+        stonesCaptured = captureStones(currentPit);
+
+        if (stonesCaptured > 0 && ((currentPit <= 6 && player == 1) || (currentPit >= 7 && player == 2))) {
+            stonesAdded += stonesCaptured - 1;
+            stores.get(storeTrack).addStones(stonesCaptured);
+        }
+
+        return stonesAdded;
     }
 
-    // Adjust the startPit index to match array indexing (0-based).
-    startPit -= 1;
+    public int moveStones(int startPit, Player player) throws InvalidMoveException {
+        if (startPit < 1 || startPit > 12) {
+            throw new InvalidMoveException("Move is out of bounds.");
+        }
 
-    // Determine the current player's index based on the start pit.
-    int currentPlayerIndex = (startPit < 6) ? 0 : 1;
-    
-    // Retrieve the old value of stones in the store before the move.
-    int oldStoreValue = getStores().get(currentPlayerIndex).getTotalStones();
-    
-    // Distribute stones from the selected pit across the board.
-    distributeStones(startPit);
+        startPit -= 1;
 
-    // Retrieve the new value of stones in the store after the move.
-    int newStoreValue = getStores().get(currentPlayerIndex).getTotalStones();
-    
-    // Calculate the difference in stones in the store to determine stones moved.
-    int stonesMoved = newStoreValue - oldStoreValue;
-    
-    return stonesMoved;
+        int currentPlayerIndex = (startPit < 6) ? 0 : 1;
+        int oldStoreValue = getStores().get(currentPlayerIndex).getTotalStones();
+
+        distributeStones(startPit);
+
+        int newStoreValue = getStores().get(currentPlayerIndex).getTotalStones();
+        int stonesMoved = newStoreValue - oldStoreValue;
+
+        return stonesMoved;
     }
-    
+
     public int getNumStones(int pitNum) {
         return pits.get(pitNum).getStoneCount();
     }
 
     public boolean isSideEmpty(int pitNum) {
-        // Determine which side based on the pit number
         int start = (pitNum < 6) ? 0 : 6;
         int end = start + 5;
 
@@ -125,21 +158,19 @@ public class Board {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-    
-    for (int i = 11; i >= 6; i--) {
-        builder.append(pits.get(i).getStoneCount()).append(" ");
-    }
-  
-    builder.append(" ").append(stores.get(0).getTotalStones()).append("\n");
+        for (int i = 11; i >= 6; i--) {
+            builder.append(pits.get(i).getStoneCount()).append(" ");
+        }
+        builder.append(" ").append(stores.get(0).getTotalStones()).append("\n");
 
-   
-    for (int i = 0; i < 6; i++) {
-        builder.append(pits.get(i).getStoneCount()).append(" ");
-    }
-    
-    builder.insert(0, stores.get(1).getTotalStones() + " ");
+        for (int i = 0; i < 6; i++) {
+            builder.append(pits.get(i).getStoneCount()).append(" ");
+        }
 
-    return builder.toString();
-    }
+        builder.insert(0, stores.get(1).getTotalStones() + " ");
 
+        return builder.toString();
+    }
 }
+
+

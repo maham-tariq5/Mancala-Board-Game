@@ -1,13 +1,10 @@
-
 package mancala;
-import java.util.ArrayList;
-import java.util.Collections;
 
+import java.util.ArrayList;
 
 public class Board {
     private ArrayList<Pit> pits;
     private ArrayList<Store> stores;
-
 
     public Board() {
         this.pits = new ArrayList<>();
@@ -16,16 +13,14 @@ public class Board {
         setUpStores();
         initializeBoard();
     }
-    
+
     public void setUpPits() {
-        pits = new ArrayList<>();
-        // Usually Mancala has 6 pits per player, adjust if needed
+        // Create 12 pits
         for (int i = 0; i < 12; i++) {
             pits.add(new Pit());
         }
     }
 
-    // Returns the list of pits in a board not including the stores
     public ArrayList<Pit> getPits() {
         return this.pits;
     }

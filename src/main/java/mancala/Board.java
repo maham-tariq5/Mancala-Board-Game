@@ -25,41 +25,7 @@ public class Board {
         return this.pits;
     }
 
-     // Establishes two empty stores in the board
-     public void setUpStores() {
-        stores.add(new Store());
-        stores.add(new Store());
-    }
-
-    // Returns list of stores in the board not including the pits
-    public ArrayList<Store> getStores() {
-        return this.stores;
-    }
-
-    // Initializes the board by distributing stones
-    public void initializeBoard() {
-        for (Pit pit : pits) {
-            for (int i = 0; i < 4; i++) {
-                pit.addStone();
-            }
-        }
-    }
-
-    // Resets the board by redistributing stones but retains the players
-    public void resetBoard() {
-        for (Pit pit : pits) {
-            pit.removeStones();
-        }
-        initializeBoard();
-    }
-
-    public void registerPlayers(Player one, Player two) {
-        stores.get(1).setOwner(one);
-        stores.get(0).setOwner(two);
-        one.setStore(stores.get(1));
-        two.setStore(stores.get(0));
-    }
-
+    
     public int captureStones(int stoppingPoint) {
 
         int stonesCaptured = 0;

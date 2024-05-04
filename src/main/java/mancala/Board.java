@@ -72,6 +72,7 @@ public class Board {
         return stonesCaptured;
     }
 
+    // main stones stuff
     public int distributeStones(int startingPoint) {
         int stonesToDistribute = getNumStones(startingPoint);
         int stonesAdded = stonesToDistribute;

@@ -9,6 +9,16 @@ JDK and Gradle
 
 # Building and Running Program
 
+Step 1: gradle build
+
+Step 2: gradle echo
+
+Step 3:  -jar build/libs/Mancala.jar
+
+
+
+
+
 
 
 

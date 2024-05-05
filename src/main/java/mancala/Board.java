@@ -80,8 +80,8 @@ public class Board {
 
     // distribute from a chosen starting point
     public int distributeStones(int startingPoint) {
-        int stonesToDistribute = getNumStones(startingPoint);
-        int stonesAdded = stonesToDistribute; // initial number of stones
+        int stonesToDistribute = getNumStones(startingPoint); // get # of stones in chosen pit
+        int stonesAdded = stonesToDistribute; // tracking stones added
         int stonesCaptured;
 
         int player = (startingPoint < 6) ? 1 : 2; // determine which player is playing
@@ -95,13 +95,16 @@ public class Board {
 
         int currentPit = startingPoint;
 
+        // Continue distributing stones until none are left in hand.
         while (stonesToDistribute > 0) {
             currentPit = (currentPit + 1) % 12; // move to the next pit
 
+             // Adjust the store track when skipping the opponent's store.
             if (currentPit == 6) {
                 storeTrack = (player == 1) ? 0 : 1;
             }
 
+            // Special condition for placing stones in pits and potentially adding one to the store.
             if ((currentPit == 5 && player == 1) || (currentPit == 11 && player == 2) ||
                     (currentPit == 5 && startingPoint == 11 && player == 2 && stonesToDistribute >= 2) ||
                     (currentPit == 11 && startingPoint == 5 && player == 1 && stonesToDistribute >= 2)) {
@@ -118,6 +121,7 @@ public class Board {
             stonesToDistribute--;
         }
 
+        // Attempt to capture stones from the opponent if the last stone lands in an appropriate pit.
         stonesCaptured = captureStones(currentPit);
 
         if (stonesCaptured > 0 && ((currentPit <= 6 && player == 1) || (currentPit >= 7 && player == 2))) {

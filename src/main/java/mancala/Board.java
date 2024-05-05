@@ -151,6 +151,7 @@ public class Board {
         return pits.get(pitNum).getStoneCount();
     }
 
+    // checking if all pits on one side of the board are empty
     public boolean isSideEmpty(int pitNum) {
         int start = (pitNum < 6) ? 0 : 6;
         int end = start + 5;
@@ -163,6 +164,7 @@ public class Board {
         return true;
     }
 
+    // string representation of the board state
     public String toString() {
         StringBuilder builder = new StringBuilder();
 

@@ -55,6 +55,7 @@ public class Board {
         initializeBoard();
     }
 
+    // linking players to their stores
     public void registerPlayers(Player one, Player two) {
         stores.get(1).setOwner(one);
         stores.get(0).setOwner(two);
@@ -62,30 +63,32 @@ public class Board {
         two.setStore(stores.get(0));
     }
 
+    // handling capturing of stones
     public int captureStones(int stoppingPoint) {
         int stonesCaptured = 0;
-        int oppositePoint = 11 - stoppingPoint;
+        int oppositePoint = 11 - stoppingPoint; // calc opposite pit index
 
+        
         if (pits.get(oppositePoint).getStoneCount() > 0 && pits.get(stoppingPoint).getStoneCount() == 1) {
             stonesCaptured += pits.get(oppositePoint).getStoneCount();
-            pits.get(oppositePoint).removeStones();
+            pits.get(oppositePoint).removeStones(); // clear captured stones
             stonesCaptured += pits.get(stoppingPoint).getStoneCount();
-            pits.get(stoppingPoint).removeStones();
+            pits.get(stoppingPoint).removeStones(); // clear last pit
         }
         return stonesCaptured;
     }
 
-    // main stones stuff
+    // distribute from a chosen starting point
     public int distributeStones(int startingPoint) {
         int stonesToDistribute = getNumStones(startingPoint);
-        int stonesAdded = stonesToDistribute;
+        int stonesAdded = stonesToDistribute; // initial number of stones
         int stonesCaptured;
 
-        int player = (startingPoint < 6) ? 1 : 2;
-        int storeTrack = (player == 1) ? 1 : 0;
+        int player = (startingPoint < 6) ? 1 : 2; // determine which player is playing
+        int storeTrack = (player == 1) ? 1 : 0; // determine which store to update
 
         if (stonesToDistribute == 0) {
-            return 0;
+            return 0; // no stones to distribute
         }
 
         pits.get(startingPoint).removeStones();
@@ -93,7 +96,7 @@ public class Board {
         int currentPit = startingPoint;
 
         while (stonesToDistribute > 0) {
-            currentPit = (currentPit + 1) % 12;
+            currentPit = (currentPit + 1) % 12; // move to the next pit
 
             if (currentPit == 6) {
                 storeTrack = (player == 1) ? 0 : 1;
@@ -108,7 +111,7 @@ public class Board {
             } else if ((currentPit == 5 && stonesToDistribute == 1 && player == 1) ||
                     (currentPit == 11 && stonesToDistribute == 1 && player == 2)) {
                 stores.get(storeTrack).addStones(1);
-                return 1;
+                return 1; // add last stone to the store
             } else {
                 pits.get(currentPit).addStone();
             }
@@ -125,6 +128,7 @@ public class Board {
         return stonesAdded;
     }
 
+    // handle a player's move from a specfic pit
     public int moveStones(int startPit, Player player) throws InvalidMoveException {
         if (startPit < 1 || startPit > 12) {
             throw new InvalidMoveException("Move is out of bounds.");

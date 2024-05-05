@@ -14,6 +14,7 @@ public class Board {
         initializeBoard();
     }
 
+    // initializing pits
     public void setUpPits() {
         // Create 12 pits
         for (int i = 0; i < 12; i++) {
@@ -25,6 +26,7 @@ public class Board {
         return this.pits;
     }
 
+    // initializing stores
     public void setUpStores() {
         stores = new ArrayList<>();
         stores.add(new Store());
@@ -35,8 +37,9 @@ public class Board {
         return this.stores;
     }
 
+    // setting stones up for all pits
     public void initializeBoard() {
-        // Distribute stones initially
+
         for (Pit pit : pits) {
             for (int i = 0; i < 4; i++) {
                 pit.addStone();

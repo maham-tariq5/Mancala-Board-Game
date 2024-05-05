@@ -134,17 +134,22 @@ public class Board {
 
     // handle a player's move from a specfic pit
     public int moveStones(int startPit, Player player) throws InvalidMoveException {
+        
+        // Validate the start pit index to ensure it's within the playable range.
         if (startPit < 1 || startPit > 12) {
             throw new InvalidMoveException("Move is out of bounds.");
         }
 
         startPit -= 1;
 
+        // Determine which player's store to use based on the pit index chosen for the move.
         int currentPlayerIndex = (startPit < 6) ? 0 : 1;
+        // Capture the initial amount of stones in the player's store to calculate the net change after the move.
         int oldStoreValue = getStores().get(currentPlayerIndex).getTotalStones();
 
         distributeStones(startPit);
 
+        // Fetch the new total of stones in the store after the stones have been distributed.
         int newStoreValue = getStores().get(currentPlayerIndex).getTotalStones();
         int stonesMoved = newStoreValue - oldStoreValue;
 
